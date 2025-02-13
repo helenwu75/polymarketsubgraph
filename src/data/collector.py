@@ -1,3 +1,4 @@
+##src/data/collector.py
 from typing import Dict, List, Optional
 import os
 from datetime import datetime
@@ -46,18 +47,17 @@ class PolymarketDataCollector:
             Dictionary containing market metrics including volume, trades, prices
         """
         try:
-            # Query orderbook data
+            # Query orderbook data using Orderbook type
             orderbook_data = self.sg.query_df(
-                self.subgraphs['orderbook'].Query.orderBook(
-                    id=market_id,
-                    first=1000
+                self.subgraphs['orderbook'].Query.orderbook(
+                    where={'id': market_id}
                 )
             )
             
-            # Query market activity
+            # Query market activity using FixedProductMarketMaker type
             activity_data = self.sg.query_df(
                 self.subgraphs['activity'].Query.fixedProductMarketMaker(
-                    id=market_id
+                    where={'id': market_id}
                 )
             )
             
@@ -189,6 +189,31 @@ class PolymarketDataCollector:
         except Exception as e:
             self.logger.error(f"Error calculating last price: {str(e)}")
             return 0.0
+
+    def get_active_markets(self, limit: int = 10) -> List[str]:
+        """
+        Get a list of active market IDs.
+        
+        Args:
+            limit: Maximum number of markets to return
+            
+        Returns:
+            List of market IDs
+        """
+        try:
+            # Query for recent markets from the FPMM subgraph
+            markets = self.sg.query_df(
+                self.subgraphs['activity'].Query.fixedProductMarketMakers(
+                    first=limit,
+                    orderBy='creationTimestamp',
+                    orderDirection='desc'
+                )
+            )
+            
+            return markets['id'].tolist()
+        except Exception as e:
+            self.logger.error(f"Error fetching active markets: {str(e)}")
+            return []
 
     def save_market_data(self, market_data: Dict, output_path: str):
         """
