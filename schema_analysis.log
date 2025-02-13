@@ -1,0 +1,19 @@
+2025-02-12 21:33:53,372 - SchemaAnalyzer - INFO - Setting up subgraphs...
+2025-02-12 21:33:53,372 - SchemaAnalyzer - INFO - Subgraphs initialized: ['pnl', 'activity', 'orderbook']
+2025-02-12 21:33:53,372 - SchemaAnalyzer - INFO - Validating configuration...
+2025-02-12 21:33:53,372 - SchemaAnalyzer - INFO - Validated pnl URL: https://gateway.thegraph.com/a...8njfVrrAfRykzfqajMGeTMEvMmskVz
+2025-02-12 21:33:53,372 - SchemaAnalyzer - INFO - Validated activity URL: https://gateway.thegraph.com/a...gC3s2G6DS8kdNBJNVhMviCtin2DiBp
+2025-02-12 21:33:53,372 - SchemaAnalyzer - INFO - Validated orderbook URL: https://gateway.thegraph.com/a...813HysXoUPvzTwE7fsfPk2RTf66nyC
+2025-02-12 21:33:53,372 - SchemaAnalyzer - INFO - Configuration validated successfully
+2025-02-12 21:33:53,372 - SchemaAnalyzer - INFO - Analyzing PNL Subgraph...
+2025-02-12 21:33:53,740 - SchemaAnalyzer - INFO - Documentation generated: docs/schemas/pnl_schema.md
+2025-02-12 21:33:53,740 - SchemaAnalyzer - INFO - Found 8 entities in PNL Subgraph
+2025-02-12 21:33:53,740 - SchemaAnalyzer - INFO - Total fields: 40
+2025-02-12 21:33:53,740 - SchemaAnalyzer - INFO - Analyzing Activity Subgraph...
+2025-02-12 21:33:53,913 - SchemaAnalyzer - INFO - Documentation generated: docs/schemas/activity_schema.md
+2025-02-12 21:33:53,913 - SchemaAnalyzer - INFO - Found 12 entities in Activity Subgraph
+2025-02-12 21:33:53,913 - SchemaAnalyzer - INFO - Total fields: 71
+2025-02-12 21:33:53,913 - SchemaAnalyzer - INFO - Analyzing Orderbook Subgraph...
+2025-02-12 21:33:54,319 - SchemaAnalyzer - INFO - Documentation generated: docs/schemas/orderbook_schema.md
+2025-02-12 21:33:54,319 - SchemaAnalyzer - INFO - Found 24 entities in Orderbook Subgraph
+2025-02-12 21:33:54,319 - SchemaAnalyzer - INFO - Total fields: 283
