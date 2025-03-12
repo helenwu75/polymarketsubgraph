@@ -21,6 +21,8 @@ class SubgraphConfig:
     pnl_url: str
     activity_url: str
     orderbook_url: str
+    positions_url: str  # Added for positions subgraph
+    open_interest_url: str  # Added for open interest subgraph
     api_key: str
 
 class SubgraphManager:
@@ -59,6 +61,9 @@ class SubgraphManager:
             pnl_url=f"https://gateway.thegraph.com/api/{api_key}/subgraphs/id/6c58N5U4MtQE2Y8njfVrrAfRykzfqajMGeTMEvMmskVz",
             activity_url=f"https://gateway.thegraph.com/api/{api_key}/subgraphs/id/Bx1W4S7kDVxs9gC3s2G6DS8kdNBJNVhMviCtin2DiBp",
             orderbook_url=f"https://gateway.thegraph.com/api/{api_key}/subgraphs/id/81Dm16JjuFSrqz813HysXoUPvzTwE7fsfPk2RTf66nyC",
+            # New subgraph URLs
+            positions_url=f"https://gateway.thegraph.com/api/{api_key}/subgraphs/id/GWvRwZwqHbL7KyJ8PJcF8W4MtRU1EjQVZ89tFwPxpYTN",
+            open_interest_url=f"https://gateway.thegraph.com/api/{api_key}/subgraphs/id/CVJgvQXGqBfUm4r3VkpzVRVZDf9CncZnspgfZnCEbZ7p",
             api_key=api_key
         )
     
@@ -77,6 +82,8 @@ class SubgraphManager:
         self._load_subgraph('pnl', self.config.pnl_url)
         self._load_subgraph('activity', self.config.activity_url)
         self._load_subgraph('orderbook', self.config.orderbook_url)
+        self._load_subgraph('positions', self.config.positions_url)
+        self._load_subgraph('open_interest', self.config.open_interest_url)
     
     def get_subgraph(self, name: str) -> Optional[any]:
         """Get a specific subgraph instance."""

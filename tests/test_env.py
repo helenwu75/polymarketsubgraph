@@ -48,6 +48,16 @@ class SchemaAnalyzer:
                 'Orderbook Subgraph',
                 os.getenv('SUBGRAPH_URL_ORDERBOOK', ''),
                 'Order Book and Pricing Information'
+            ),
+            'positions': SubgraphInfo(
+                'Positions Subgraph',
+                os.getenv('SUBGRAPH_URL_POSITIONS', ''),
+                'User Positions and Trading History'
+            ),
+            'open_interest': SubgraphInfo(
+                'Open Interest Subgraph',
+                os.getenv('SUBGRAPH_URL_OPEN_INTEREST', ''),
+                'Market Open Interest and Liquidity Data'
             )
         }
         
