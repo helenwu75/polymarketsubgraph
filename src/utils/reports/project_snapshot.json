@@ -1,17 +1,31 @@
 {
   "directory_structure": {
-    "project_snapshot.json": null,
     "requirements.txt": null,
-    "schema_analyzer.py": null,
     "README.md": null,
-    "analyze_project.py": null,
     "tests": {
       "__init__.py": null,
+      "test_env.py": null,
       "test_config.py": null
+    },
+    "docs": {
+      "query_info": {
+        "subgraph-queries-doc.md": null,
+        "data-relationships.md": null
+      },
+      "schemas": {
+        "orderbook_schema.md": null,
+        "activity_schema.md": null,
+        "pnl_schema.md": null
+      }
+    },
+    "logs": {
+      "schema_analysis.log": null
     },
     "examples": {
       "collect_market_data.py": null,
-      "test_connection.py": null
+      "collect_election_data.py": null,
+      "test_connection.py": null,
+      "example_usage.py": null
     },
     "data": {
       "processed": {},
@@ -19,24 +33,31 @@
         "market_EXAMPLE_MARKET_ID_metrics.csv": null
       }
     },
+    "reports": {},
     "src": {
       "__init__.py": null,
       "config": {
         "__init__.py": null,
-        "example_usage.py": null,
-        "create_env.py": null,
-        "setup_config.py": null,
+        "settings.py": null,
         "src": {}
       },
       "utils": {
-        "__init__.py": null
+        "project_analyzer.py": null,
+        "__init__.py": null,
+        "schema_analyzer.py": null,
+        "validation.py": null,
+        "reports": {
+          "project_snapshot.json": null
+        }
       },
       "models": {
-        "__init__.py": null
+        "__init__.py": null,
+        "market_analysis.py": null
       },
       "data": {
         "collector.py": null,
-        "__init__.py": null
+        "__init__.py": null,
+        "processor.py": null
       }
     }
   },
@@ -123,20 +144,24 @@
     "zipp==3.21.0"
   ],
   "python_files": [
-    "schema_analyzer.py",
-    "analyze_project.py",
     "tests/__init__.py",
+    "tests/test_env.py",
     "tests/test_config.py",
     "examples/collect_market_data.py",
+    "examples/collect_election_data.py",
     "examples/test_connection.py",
+    "examples/example_usage.py",
     "src/__init__.py",
     "src/config/__init__.py",
-    "src/config/example_usage.py",
-    "src/config/create_env.py",
-    "src/config/setup_config.py",
+    "src/config/settings.py",
+    "src/utils/project_analyzer.py",
     "src/utils/__init__.py",
+    "src/utils/schema_analyzer.py",
+    "src/utils/validation.py",
     "src/models/__init__.py",
+    "src/models/market_analysis.py",
     "src/data/collector.py",
-    "src/data/__init__.py"
+    "src/data/__init__.py",
+    "src/data/processor.py"
   ]
 }

@@ -1,3 +1,5 @@
+# src/utils/project_analyzer.py
+
 import os
 import json
 from typing import Dict, List, Optional
@@ -16,6 +18,10 @@ class ProjectStructureAnalyzer:
         self.dependencies = []
         self.python_files = []
         
+        # Create necessary directories
+        self.reports_dir = os.path.join(root_dir, 'reports')
+        os.makedirs(self.reports_dir, exist_ok=True)
+    
     def analyze_structure(self) -> Dict:
         """Analyze the complete project structure."""
         # Get directory structure
@@ -96,14 +102,24 @@ class ProjectStructureAnalyzer:
                     relative_path = os.path.relpath(file_path, self.root_dir)
                     self.python_files.append(relative_path)
 
-def save_project_snapshot(snapshot: Dict, output_file: str = 'project_snapshot.json') -> None:
-    """Save the project snapshot to a JSON file."""
-    with open(output_file, 'w') as f:
+def save_project_snapshot(snapshot: Dict, output_dir: str = 'reports', output_file: str = 'project_snapshot.json') -> None:
+    """
+    Save the project snapshot to a JSON file.
+    
+    Args:
+        snapshot: Dictionary containing project analysis
+        output_dir: Directory to save the snapshot (default: reports)
+        output_file: Name of the output file
+    """
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, output_file)
+    
+    with open(output_path, 'w') as f:
         json.dump(snapshot, f, indent=2)
 
 def main():
     # Get the current directory
-    current_dir = os.getcwd()
+    current_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     
     # Create analyzer instance
     analyzer = ProjectStructureAnalyzer(current_dir)
@@ -111,10 +127,10 @@ def main():
     # Get project snapshot
     snapshot = analyzer.analyze_structure()
     
-    # Save snapshot
+    # Save snapshot to reports directory
     save_project_snapshot(snapshot)
     
-    print("Project structure analysis complete. Results saved to project_snapshot.json")
+    print("Project structure analysis complete. Results saved to reports/project_snapshot.json")
     print("\nKey Statistics:")
     print(f"Total Python files: {len(snapshot['python_files'])}")
     print(f"Total dependencies: {len(snapshot['dependencies'])}")

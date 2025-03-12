@@ -1,6 +1,6 @@
 # src/config/example_usage.py
 
-from setup_config import get_subgraph_manager
+from src.config.settings import get_subgraph_manager
 
 def test_subgraph_setup():
     """Test subgraph configuration and basic queries."""
