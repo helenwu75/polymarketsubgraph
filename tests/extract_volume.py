@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Extract key market metrics for a Polymarket election market using token IDs.
-This simplified version focuses on reliable metrics and uses estimation for 48-hour volume.
+Extract accurate market metrics for a Polymarket election market using token IDs.
+This improved version separates buy/sell volumes and avoids double counting.
 """
 
 import os
@@ -56,6 +56,7 @@ def parse_token_ids(token_ids_str):
 def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=False):
     """
     Extract key metrics for a specific market using token IDs.
+    This improved version separates buy and sell volumes to avoid double counting.
     
     Args:
         token_ids (list): List of token IDs
@@ -87,14 +88,16 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
     }
     
     # Query each token ID for orderbook data
-    total_volume = 0
+    total_buy_volume = 0
+    total_sell_volume = 0
     total_trades = 0
+    all_trades_data = []
     
     for token_id in token_ids:
         print(f"\nQuerying data for token ID: {token_id}")
         token_data = {'token_id': token_id}
         
-        # Query Orderbook entity for total volume and trades
+        # Query Orderbook entity for separate buy and sell volumes
         try:
             orderbook_query = orderbook_subgraph.Query.orderbook(
                 id=token_id
@@ -105,8 +108,12 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
                 orderbook_query.tradesQuantity,
                 orderbook_query.buysQuantity,
                 orderbook_query.sellsQuantity,
-                orderbook_query.collateralVolume,
-                orderbook_query.scaledCollateralVolume
+                # Separate buy and sell volumes
+                orderbook_query.scaledCollateralBuyVolume,
+                orderbook_query.scaledCollateralSellVolume,
+                # Get raw volumes too for verification
+                orderbook_query.collateralBuyVolume,
+                orderbook_query.collateralSellVolume
             ])
             
             if not orderbook_result.empty and not orderbook_result.iloc[0].isnull().all():
@@ -118,12 +125,22 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
                     token_data['trades_quantity'] = trades_quantity
                     total_trades += trades_quantity
                 
-                if 'orderbook_scaledCollateralVolume' in orderbook_result.columns:
-                    volume = float(orderbook_result['orderbook_scaledCollateralVolume'].iloc[0] or 0)
-                    token_data['volume'] = volume
-                    total_volume += volume
+                # Extract buy volume
+                if 'orderbook_scaledCollateralBuyVolume' in orderbook_result.columns:
+                    buy_volume = float(orderbook_result['orderbook_scaledCollateralBuyVolume'].iloc[0] or 0)
+                    token_data['buy_volume'] = buy_volume
+                    total_buy_volume += buy_volume
                 
-                # Extract buys and sells ratio if available
+                # Extract sell volume
+                if 'orderbook_scaledCollateralSellVolume' in orderbook_result.columns:
+                    sell_volume = float(orderbook_result['orderbook_scaledCollateralSellVolume'].iloc[0] or 0)
+                    token_data['sell_volume'] = sell_volume
+                    total_sell_volume += sell_volume
+                
+                # Calculate total volume (buy + sell, not double-counted)
+                token_data['total_volume'] = token_data.get('buy_volume', 0) + token_data.get('sell_volume', 0)
+                
+                # Extract buys and sells quantity if available
                 if 'orderbook_buysQuantity' in orderbook_result.columns and 'orderbook_sellsQuantity' in orderbook_result.columns:
                     buys = int(orderbook_result['orderbook_buysQuantity'].iloc[0] or 0)
                     sells = int(orderbook_result['orderbook_sellsQuantity'].iloc[0] or 0)
@@ -142,8 +159,10 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
         # Add token data to metrics
         metrics['tokens_data'].append(token_data)
     
-    # Add total volume and trades to metrics
-    metrics['total_volume'] = total_volume
+    # Add total volumes to metrics
+    metrics['total_buy_volume'] = total_buy_volume
+    metrics['total_sell_volume'] = total_sell_volume
+    metrics['total_volume'] = total_buy_volume + total_sell_volume  # Sum of buy and sell, not double-counted
     metrics['total_trades'] = total_trades
     
     # Calculate market duration and daily volume if start/end dates are provided
@@ -155,8 +174,8 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
             market_duration = (market_end_date - creation_date).days
             metrics['market_duration_days'] = market_duration
             
-            if market_duration > 0 and total_volume > 0:
-                metrics['avg_daily_volume'] = total_volume / market_duration
+            if market_duration > 0 and metrics['total_volume'] > 0:
+                metrics['avg_daily_volume'] = metrics['total_volume'] / market_duration
         except Exception as e:
             print(f"Error calculating market duration: {e}")
     
@@ -169,13 +188,12 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
             # Simple estimate: 48 hours is 2/market_duration_days of the total volume
             # This assumes uniform distribution of volume over time, which is a simplification
             estimated_ratio = 2 / metrics['market_duration_days']
-            metrics['volume_final_48h_estimated'] = total_volume * estimated_ratio
+            metrics['volume_final_48h_estimated'] = metrics['total_volume'] * estimated_ratio
             metrics['volume_final_48h_estimated_note'] = "Estimated based on average daily volume"
             
         return metrics
     
     # If we get here, attempt to calculate 48-hour volume
-    # (This is the part that often fails for high-volume markets)
     try:
         # Parse end date
         market_end_date = datetime.fromisoformat(end_date.replace('Z', '+00:00'))
@@ -185,7 +203,8 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
         cutoff_timestamp = int(cutoff_date.timestamp())
         
         # Query for trades in final 48 hours across all tokens
-        volume_48h = 0
+        buy_volume_48h = 0
+        sell_volume_48h = 0
         trades_48h = 0
         
         for token_id in token_ids:
@@ -193,7 +212,8 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
                 # Use a smaller batch size with multiple requests to avoid timeouts
                 max_events = 100  # Process in smaller batches
                 total_token_trades_48h = 0
-                total_token_volume_48h = 0
+                total_token_buy_volume_48h = 0
+                total_token_sell_volume_48h = 0
                 
                 # Start with most recent trades first
                 skip = 0
@@ -201,21 +221,23 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
                 
                 for attempt in range(max_attempts):
                     try:
-                        # Query a batch of trades with timeout protection
-                        events_query = orderbook_subgraph.Query.orderFilledEvents(
+                        # Query filled orders to get individual trade data
+                        events_query = orderbook_subgraph.Query.enrichedOrderFilleds(
                             first=max_events,
                             skip=skip,
                             orderBy='timestamp',
                             orderDirection='desc',
                             where={
-                                'makerAssetId': token_id
+                                'market': token_id
                             }
                         )
                         
                         events_result = sg.query_df([
                             events_query.id,
                             events_query.timestamp,
-                            events_query.makerAmountFilled
+                            events_query.side,  # Buy or Sell
+                            events_query.size,  # Amount in collateral
+                            events_query.price  # Price of the conditional token
                         ])
                         
                         if events_result.empty:
@@ -224,7 +246,7 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
                             
                         # Filter events in Python by timestamp
                         events_48h = events_result[
-                            events_result['orderFilledEvents_timestamp'].astype(int) >= cutoff_timestamp
+                            events_result['enrichedOrderFilleds_timestamp'].astype(int) >= cutoff_timestamp
                         ]
                         
                         if not events_48h.empty:
@@ -232,10 +254,19 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
                             batch_trades = len(events_48h)
                             total_token_trades_48h += batch_trades
                             
-                            # Calculate volume for this batch
-                            if 'orderFilledEvents_makerAmountFilled' in events_48h.columns:
-                                batch_volume = events_48h['orderFilledEvents_makerAmountFilled'].sum() / 10**6
-                                total_token_volume_48h += batch_volume
+                            # Process each trade by type (Buy/Sell)
+                            if 'enrichedOrderFilleds_side' in events_48h.columns and 'enrichedOrderFilleds_size' in events_48h.columns:
+                                # Process buys
+                                buys_df = events_48h[events_48h['enrichedOrderFilleds_side'] == 'Buy']
+                                if not buys_df.empty:
+                                    buy_volume = buys_df['enrichedOrderFilleds_size'].sum() / 10**6
+                                    total_token_buy_volume_48h += buy_volume
+                                
+                                # Process sells
+                                sells_df = events_48h[events_48h['enrichedOrderFilleds_side'] == 'Sell']
+                                if not sells_df.empty:
+                                    sell_volume = sells_df['enrichedOrderFilleds_size'].sum() / 10**6
+                                    total_token_sell_volume_48h += sell_volume
                         
                         # If we got fewer events than requested, we're done
                         if len(events_result) < max_events:
@@ -256,21 +287,25 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
                 # Add this token's data to the total
                 if total_token_trades_48h > 0:
                     print(f"Found {total_token_trades_48h} trades in final 48 hours for token {token_id}")
-                    print(f"Volume in final 48 hours for this token: ${total_token_volume_48h:,.2f}")
+                    print(f"Buy Volume in final 48 hours: ${total_token_buy_volume_48h:,.2f}")
+                    print(f"Sell Volume in final 48 hours: ${total_token_sell_volume_48h:,.2f}")
                     trades_48h += total_token_trades_48h
-                    volume_48h += total_token_volume_48h
+                    buy_volume_48h += total_token_buy_volume_48h
+                    sell_volume_48h += total_token_sell_volume_48h
                 
             except Exception as e:
                 print(f"Error querying final 48 hours data for token {token_id}: {e}")
         
         # Add to metrics
-        metrics['volume_final_48h'] = volume_48h
+        metrics['buy_volume_final_48h'] = buy_volume_48h
+        metrics['sell_volume_final_48h'] = sell_volume_48h
+        metrics['volume_final_48h'] = buy_volume_48h + sell_volume_48h
         metrics['trades_final_48h'] = trades_48h
         
         # If we have market duration but no valid 48h volume, add the estimate
         if ('volume_final_48h' not in metrics or metrics['volume_final_48h'] == 0) and 'market_duration_days' in metrics and metrics['market_duration_days'] > 0:
             estimated_ratio = 2 / metrics['market_duration_days']
-            metrics['volume_final_48h_estimated'] = total_volume * estimated_ratio
+            metrics['volume_final_48h_estimated'] = metrics['total_volume'] * estimated_ratio
             metrics['volume_final_48h_estimated_note'] = "Estimated based on average daily volume"
             
     except Exception as e:
@@ -279,7 +314,7 @@ def extract_market_metrics(token_ids, end_date=None, start_date=None, skip_48h=F
         # If we have market duration, add the estimate
         if 'market_duration_days' in metrics and metrics['market_duration_days'] > 0:
             estimated_ratio = 2 / metrics['market_duration_days']
-            metrics['volume_final_48h_estimated'] = total_volume * estimated_ratio
+            metrics['volume_final_48h_estimated'] = metrics['total_volume'] * estimated_ratio
             metrics['volume_final_48h_estimated_note'] = "Estimated based on average daily volume"
     
     return metrics
@@ -319,7 +354,12 @@ def main():
         if args.market_id:
             print(f"Market ID: {args.market_id}")
         
-        if 'total_volume' in metrics:
+        # Print volume metrics with separate buy/sell volumes
+        if 'total_buy_volume' in metrics and 'total_sell_volume' in metrics:
+            print(f"Total Buy Volume: ${metrics['total_buy_volume']:,.2f}")
+            print(f"Total Sell Volume: ${metrics['total_sell_volume']:,.2f}")
+            print(f"Total Combined Volume: ${metrics['total_volume']:,.2f}")
+        elif 'total_volume' in metrics:
             print(f"Total Volume: ${metrics['total_volume']:,.2f}")
         
         if 'total_trades' in metrics:
@@ -332,8 +372,10 @@ def main():
             print(f"Avg Daily Volume: ${metrics['avg_daily_volume']:,.2f}")
         
         # Print 48-hour volume (actual or estimated)
-        if 'volume_final_48h' in metrics and metrics['volume_final_48h'] > 0:
-            print(f"Volume in Final 48 Hours: ${metrics['volume_final_48h']:,.2f}")
+        if 'buy_volume_final_48h' in metrics and 'sell_volume_final_48h' in metrics:
+            print(f"Buy Volume in Final 48 Hours: ${metrics['buy_volume_final_48h']:,.2f}")
+            print(f"Sell Volume in Final 48 Hours: ${metrics['sell_volume_final_48h']:,.2f}")
+            print(f"Total Volume in Final 48 Hours: ${metrics['volume_final_48h']:,.2f}")
             
             if 'trades_final_48h' in metrics:
                 print(f"Trades in Final 48 Hours: {metrics['trades_final_48h']:,}")
@@ -356,12 +398,25 @@ def main():
             print("\nIndividual Token Data:")
             for idx, token_data in enumerate(metrics['tokens_data']):
                 print(f"\nToken {idx+1}: {token_data.get('token_id')}")
-                if 'volume' in token_data:
-                    print(f"- Volume: ${token_data['volume']:,.2f}")
+                
+                if 'buy_volume' in token_data and 'sell_volume' in token_data:
+                    print(f"- Buy Volume: ${token_data['buy_volume']:,.2f}")
+                    print(f"- Sell Volume: ${token_data['sell_volume']:,.2f}")
+                    print(f"- Total Volume: ${token_data.get('total_volume', 0):,.2f}")
+                elif 'total_volume' in token_data:
+                    print(f"- Volume: ${token_data['total_volume']:,.2f}")
+                    
                 if 'trades_quantity' in token_data:
                     print(f"- Trades: {token_data['trades_quantity']:,}")
+                    
                 if 'buy_sell_ratio' in token_data:
                     print(f"- Buy/Sell Ratio: {token_data['buy_sell_ratio']:.2f}")
+        
+        # Save results to JSON file
+        output_file = f"market_metrics_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        with open(output_file, 'w') as f:
+            json.dump(metrics, f, indent=2)
+        print(f"\nDetailed metrics saved to: {output_file}")
         
     except Exception as e:
         print(f"Error executing script: {e}")
