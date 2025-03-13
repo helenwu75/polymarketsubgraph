@@ -1,0 +1,58 @@
+{
+  "market_id": "0xdd22472e552920b8438158ea7238bfadfa4f736aa4cee91a6b86c39ead110917",
+  "token_ids": [
+    "21742633143463906290569050155826241533067272736897614950488156847949938836455",
+    "48331043336612883890938759509493159234755048973500640148014422747788308965732"
+  ],
+  "tokens_data": [
+    {
+      "token_id": "21742633143463906290569050155826241533067272736897614950488156847949938836455",
+      "trades_quantity": 3450272,
+      "buys_quantity": 1815044,
+      "sells_quantity": 1635228,
+      "buy_sell_ratio": 1.10996387048167,
+      "buy_usdc": 682699077.505272,
+      "sell_usdc": 536847532.950333,
+      "total_usdc": 1219546610.455605
+    },
+    {
+      "token_id": "48331043336612883890938759509493159234755048973500640148014422747788308965732",
+      "trades_quantity": 1659347,
+      "buys_quantity": 938249,
+      "sells_quantity": 721098,
+      "buy_sell_ratio": 1.3011393735664223,
+      "buy_usdc": 265541549.508938,
+      "sell_usdc": 151100062.51249,
+      "total_usdc": 416641612.021428
+    }
+  ],
+  "creation_date": "2024-01-04T22:58:00Z",
+  "end_date": "2024-11-05T12:00:00Z",
+  "market_duration_days": 305,
+  "total_trades": 5109619,
+  "total_usdc_volume": 1636188222.4770331,
+  "avg_daily_volume": 5364551.549105027,
+  "unique_traders": 1000,
+  "trader_to_volume_ratio": 1636188.222477033,
+  "trading_frequency": 5109.619,
+  "buy_sell_ratio": 1.3783617142760307,
+  "total_buy_usdc": 948240627.01421,
+  "total_sell_usdc": 687947595.462823,
+  "trader_metrics": {
+    "unique_traders": 1000,
+    "total_trades": 1659347,
+    "trades_per_token": {
+      "48331043336612883890938759509493159234755048973500640148014422747788308965732": {
+        "trader_count": 1000,
+        "trades_count": 1659347
+      }
+    },
+    "trader_addresses": [
+      "0x0273c64051bf8c262763171846e0e95026e9188d",
+      "0x02669cef0ad8afc47a5b838c165401a84d2ef659",
+      "0x00081c10cf1c09e469fd64f938ac9e585c48cd65",
+      "0x019b47b386544935110855daf8568923c6adc023",
+      "0x01df4f3d71ddb2609b5966922a9caaa33a233314"
+    ]
+  }
+}
