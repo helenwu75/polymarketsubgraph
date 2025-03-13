@@ -18,7 +18,9 @@ def test_configuration():
     subgraphs = {
         'PNL': os.getenv('SUBGRAPH_URL_PNL'),
         'Activity': os.getenv('SUBGRAPH_URL_ACTIVITY'),
-        'Orderbook': os.getenv('SUBGRAPH_URL_ORDERBOOK')
+        'Orderbook': os.getenv('SUBGRAPH_URL_ORDERBOOK'),
+        'Positions': os.getenv('SUBGRAPH_URL_POSITIONS'),
+        'Open Interest': os.getenv('SUBGRAPH_URL_OPEN_INTEREST')
     }
     
     headers = {
