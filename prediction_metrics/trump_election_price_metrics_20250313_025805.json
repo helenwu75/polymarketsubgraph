@@ -1,0 +1,44 @@
+{
+  "market_id": "0xdd22472e552920b8438158ea7238bfadfa4f736aa4cee91a6b86c39ead110917",
+  "election_date": "2024-11-05",
+  "election_timestamp": 1730782800,
+  "analysis_timestamp": "2025-03-13T02:57:10.169865",
+  "tokens": [
+    {
+      "token_id": "21742633143463906290569050155826241533067272736897614950488156847949938836455",
+      "closing_price": 0.592,
+      "closing_time": "2024-11-04T23:59:58",
+      "hours_before_election": 0.0005555555555555556,
+      "vwap": 0.5863418905964471,
+      "trade_count": 93949,
+      "total_volume": 22328426489815.0,
+      "buy_volume": 13592953228301.0,
+      "sell_volume": 8735473261514.0,
+      "buy_sell_ratio": 1.5560637439287541,
+      "price_volatility": 0.013754779425947009,
+      "mean_price": 0.5864285240639288,
+      "min_price": 0.557,
+      "max_price": 0.601,
+      "price_range": 0.04399999999999993,
+      "sample_count": 101
+    },
+    {
+      "token_id": "48331043336612883890938759509493159234755048973500640148014422747788308965732",
+      "closing_price": 0.407,
+      "closing_time": "2024-11-04T23:59:56",
+      "hours_before_election": 0.0011111111111111111,
+      "vwap": 0.41455100715470716,
+      "trade_count": 38593,
+      "total_volume": 9607274831162.0,
+      "buy_volume": 6482594021818.0,
+      "sell_volume": 3124680809344.0,
+      "buy_sell_ratio": 2.0746419930101485,
+      "price_volatility": 0.02022641836173212,
+      "mean_price": 0.41306698410098613,
+      "min_price": 0.399,
+      "max_price": 0.443,
+      "price_range": 0.043999999999999984,
+      "sample_count": 38
+    }
+  ]
+}
