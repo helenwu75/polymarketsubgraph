@@ -30,10 +30,10 @@ import contextlib
 
 # Constants for pagination and timeouts
 BATCH_SIZE = 1000
-REQUEST_TIMEOUT = 300  # Seconds
+REQUEST_TIMEOUT = 120  # Seconds
 MAX_RETRIES = 3
 RETRY_DELAY = 5  # Seconds
-MAX_TRADERS_PER_TOKEN = 100000000000  # Limit to prevent excessive runtime
+MAX_TRADERS_PER_TOKEN = 100000  # Limit to prevent excessive runtime
 
 # ConfigSettings class to allow runtime modification of constants
 class ConfigSettings:
@@ -404,7 +404,7 @@ def retry_with_backoff(func, max_retries=None, initial_delay=None):
                 print(f"All {max_retries} attempts failed. Last error: {e}")
                 raise
 
-def extract_enhanced_metrics(market_id: str, token_ids: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None) -> Dict[str, Any]:
+def extract_enhanced_metrics(market_id: str, token_ids: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None, market_name: Optional[str] = None) -> Dict[str, Any]:
     """
     Extract comprehensive metrics for a Polymarket market.
     
@@ -413,6 +413,7 @@ def extract_enhanced_metrics(market_id: str, token_ids: List[str], start_date: O
         token_ids (list): List of token IDs
         start_date (str, optional): Market start date in ISO format
         end_date (str, optional): Market end date in ISO format
+        market_name (str, optional): Market name or question for the filename
         
     Returns:
         dict: Enhanced market metrics
@@ -430,6 +431,7 @@ def extract_enhanced_metrics(market_id: str, token_ids: List[str], start_date: O
     # Initialize metrics dictionary
     metrics = {
         'market_id': market_id,
+        'market_name': market_name,
         'token_ids': token_ids,
         'tokens_data': [],
         'creation_date': None,
@@ -591,7 +593,8 @@ def main():
     parser.add_argument("--token-ids", help="Token IDs as JSON string")
     parser.add_argument("--end-date", help="Market end date (e.g., 2024-11-05T12:00:00Z)")
     parser.add_argument("--start-date", help="Market start date (e.g., 2024-01-04T22:58:00Z)")
-    parser.add_argument("--output", help="Output file path", default="market_metrics")
+    parser.add_argument("--market-name", help="Market name (for filename)")
+    parser.add_argument("--output-dir", help="Output directory for files", default="market_metrics")
     parser.add_argument("--max-traders", type=int, help=f"Maximum traders to retrieve per token (default: {config.max_traders_per_token})")
     parser.add_argument("--timeout", type=int, help=f"Request timeout in seconds (default: {config.request_timeout})")
     args = parser.parse_args()
@@ -619,6 +622,10 @@ def main():
         if not args.end_date:
             args.end_date = "2024-11-05T12:00:00Z"
             print(f"Using default end date: {args.end_date}")
+            
+        if not args.market_name:
+            args.market_name = "Trump_2024_Presidential_Election"
+            print(f"Using default market name: {args.market_name}")
         
         # Parse token IDs
         token_ids = parse_token_ids(args.token_ids)
@@ -630,18 +637,24 @@ def main():
         print(f"Using request timeout: {config.request_timeout}s")
         print(f"Maximum traders per token: {config.max_traders_per_token}")
         
+        # Create output directory if it doesn't exist
+        os.makedirs(args.output_dir, exist_ok=True)
+        print(f"Saving metrics to directory: {args.output_dir}")
+        
         # Extract enhanced metrics
         metrics = extract_enhanced_metrics(
             args.market_id,
             token_ids,
             args.start_date,
-            args.end_date
+            args.end_date,
+            args.market_name
         )
         
         # Print results summary
         print("\nMarket Metrics Summary:")
         print("=" * 50)
         print(f"Market ID: {args.market_id}")
+        print(f"Market Name: {args.market_name}")
         
         # Print key metrics
         if metrics['creation_date']:
@@ -672,9 +685,13 @@ def main():
         if metrics['buy_sell_ratio'] is not None:
             print(f"Buy/Sell Ratio: {metrics['buy_sell_ratio']:.2f}")
         
+        # Generate sanitized market name for filename
+        sanitized_name = args.market_name.replace(" ", "_").replace("/", "_").replace("\\", "_")
+        sanitized_name = ''.join(c for c in sanitized_name if c.isalnum() or c in ['_', '-'])
+        
         # Save results to JSON file
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        output_file = f"{args.output}_{timestamp}.json"
+        output_file = f"{args.output_dir}/{sanitized_name}_{timestamp}.json"
         
         with open(output_file, 'w') as f:
             json.dump(metrics, f, indent=2)

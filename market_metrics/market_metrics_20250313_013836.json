@@ -32,31 +32,31 @@
   "total_trades": 5109619,
   "total_usdc_volume": 1636188222.4770331,
   "avg_daily_volume": 5364551.549105027,
-  "unique_traders": 1626,
-  "trader_to_volume_ratio": 1006265.8194815702,
-  "trading_frequency": 3142.447109471095,
+  "unique_traders": 84140,
+  "trader_to_volume_ratio": 19446.02118465692,
+  "trading_frequency": 60.72758497741859,
   "buy_sell_ratio": 1.3783617142760307,
   "total_buy_usdc": 948240627.01421,
   "total_sell_usdc": 687947595.462823,
   "trader_metrics": {
-    "unique_traders": 1626,
+    "unique_traders": 84140,
     "total_trades": 5109619,
     "trades_per_token": {
       "21742633143463906290569050155826241533067272736897614950488156847949938836455": {
-        "trader_count": 1000,
+        "trader_count": 0,
         "trades_count": 3450272
       },
       "48331043336612883890938759509493159234755048973500640148014422747788308965732": {
-        "trader_count": 1000,
+        "trader_count": 84140,
         "trades_count": 1659347
       }
     },
     "trader_addresses": [
-      "0x011e85ab94fa28a2231f76c091da82a7af1029dd",
-      "0x009ba078efdc7b625a37d057e94defdf4338d903",
-      "0x012ae8561f15047b4bc48815881159840403bca8",
-      "0x00ca2712e3f6797a66f3c8046f1f7102d8fd9b14",
-      "0x00f3ea21b3c87c675f22438a9ca32ac0213b4de4"
+      "0x83aa908c364363a249f87dd7d8bbf1c7473f2fbe",
+      "0x44c02d886b418420fc5828f03eabdbd9e3a9ec56",
+      "0x8545e495289b52d538f21525fe0ea2616933db3e",
+      "0x793e32576b086f894b60c4d6b25e1bf61d380f20",
+      "0xb9f7f1e75543cb1822bbbe4620597c1ea7dea833"
     ]
   }
 }

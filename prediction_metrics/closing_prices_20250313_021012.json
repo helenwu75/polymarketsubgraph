@@ -1,0 +1,44 @@
+{
+  "market_id": null,
+  "election_date": "2024-11-05",
+  "election_timestamp": 1730782800,
+  "analysis_timestamp": "2025-03-13T02:10:11.026951",
+  "tokens": [
+    {
+      "token_id": "21742633143463906290569050155826241533067272736897614950488156847949938836455",
+      "found": true,
+      "current_price": "0.998",
+      "condition_id": "0xdd22472e552920b8438158ea7238bfadfa4f736aa4cee91a6b86c39ead110917",
+      "outcome_index": null,
+      "trades_quantity": "3450272",
+      "volume": "1219546610.455605",
+      "buys_quantity": "1815044",
+      "sells_quantity": "1635228",
+      "timestamp": 1730782798,
+      "datetime": "2024-11-04T23:59:58",
+      "price": 0.592,
+      "side": "Sell",
+      "size": 8951040.0,
+      "hours_before_election": 0.0005555555555555556,
+      "transaction_hash": "0xc0b924dc8cd8209b3a811bd40e0066f9268e01baea40b52692e41db937ad3ea7"
+    },
+    {
+      "token_id": "48331043336612883890938759509493159234755048973500640148014422747788308965732",
+      "found": true,
+      "current_price": "0.001",
+      "condition_id": "0xdd22472e552920b8438158ea7238bfadfa4f736aa4cee91a6b86c39ead110917",
+      "outcome_index": null,
+      "trades_quantity": "1659347",
+      "volume": "416641612.021428",
+      "buys_quantity": "938249",
+      "sells_quantity": "721098",
+      "timestamp": 1730782796,
+      "datetime": "2024-11-04T23:59:56",
+      "price": 0.407,
+      "side": "Sell",
+      "size": 50093560.0,
+      "hours_before_election": 0.0011111111111111111,
+      "transaction_hash": "0xa7a45662d8ce644a4c6835b3eabc1a7df5cfb622bd856a75827b5d98267971e4"
+    }
+  ]
+}
