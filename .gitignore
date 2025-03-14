@@ -35,6 +35,10 @@ polymarket_raw_data/
 !data/processed/.gitkeep
 reports/
 missing_tokens/
+volume_test/
+volume_analysis/
+logs/*
+logs/
 
 # IDE
 .idea/
