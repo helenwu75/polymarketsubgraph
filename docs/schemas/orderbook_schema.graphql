@@ -96,4 +96,3 @@ type OrdersMatchedGlobal @entity {
   "Global volume of share sales in USDC scaled by 10^6"
   scaledCollateralSellVolume: BigDecimal!
 }
-

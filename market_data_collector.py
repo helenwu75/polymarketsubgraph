@@ -356,10 +356,10 @@ def collect_orderbook_data(token_id, api_key, output_dir, timeout=60):
             'error': str(e)
         }
 
-def collect_orders_matched_events(token_id, api_key, output_dir, batch_size=5000, timeout=60):
+def collect_orders_matched_events(token_id, api_key, output_dir, batch_size=1000, timeout=60):
     """
     Collect OrdersMatchedEvent data for a specific token and save to disk.
-    Properly implemented to use the ordersMatchedEvents entity.
+    Correctly implemented based on the actual schema.
     """
     url = f"https://gateway.thegraph.com/api/{api_key}/subgraphs/id/81Dm16JjuFSrqz813HysXoUPvzTwE7fsfPk2RTf66nyC"
     headers = {
@@ -396,73 +396,53 @@ def collect_orders_matched_events(token_id, api_key, output_dir, batch_size=5000
     # Create progress bar
     progress = tqdm(desc=f"Token {token_id} matched events", unit="batch", position=0, leave=True)
     
+    # First try to collect both ordersMatchedEvents and orderFilledEvents to be thorough
     try:
-        # First collect events where this token is the makerAssetID
+        # 1. First try OrdersMatchedEvent - looking for events where this token is the makerAssetID
         skip = 0
         has_more = True
         
         while has_more:
+            # According to the schema, makerAssetID and takerAssetID are BigInt types
+            query = {
+                'query': f"""
+                {{
+                  ordersMatchedEvents(
+                    first: {batch_size}
+                    skip: {skip}
+                    orderBy: timestamp
+                    orderDirection: asc
+                  ) {{
+                    id
+                    timestamp
+                    makerAmountFilled
+                    takerAmountFilled
+                    makerAssetID
+                    takerAssetID
+                  }}
+                }}
+                """
+            }
+            
             try:
-                # Try with makerAssetID first (uppercase ID)
-                query = {
-                    'query': f"""
-                    {{
-                      ordersMatchedEvents(
-                        first: {batch_size}
-                        skip: {skip}
-                        orderBy: timestamp
-                        orderDirection: asc
-                        where: {{ 
-                          makerAssetID: "{token_id}" 
-                        }}
-                      ) {{
-                        id
-                        timestamp
-                        makerAmountFilled
-                        takerAmountFilled
-                        makerAssetID
-                        takerAssetID
-                      }}
-                    }}
-                    """
-                }
+                data = make_api_request(url, headers, query, timeout=timeout)
+                events = data.get('data', {}).get('ordersMatchedEvents', [])
                 
-                try:
-                    data = make_api_request(url, headers, query, timeout=timeout)
-                    events = data.get('data', {}).get('ordersMatchedEvents', [])
-                except Exception as e:
-                    # Try with camelCase field names (makerAssetId instead of makerAssetID)
-                    logger.warning(f"First query failed: {e}. Trying with camelCase field names.")
-                    query = {
-                        'query': f"""
-                        {{
-                          ordersMatchedEvents(
-                            first: {batch_size}
-                            skip: {skip}
-                            orderBy: timestamp
-                            orderDirection: asc
-                            where: {{ 
-                              makerAssetId: "{token_id}" 
-                            }}
-                          ) {{
-                            id
-                            timestamp
-                            makerAmountFilled
-                            takerAmountFilled
-                            makerAssetId
-                            takerAssetId
-                          }}
-                        }}
-                        """
-                    }
-                    data = make_api_request(url, headers, query, timeout=timeout)
-                    events = data.get('data', {}).get('ordersMatchedEvents', [])
-                
-                # Process the events
+                # Process the events - filter here for relevant token
                 if events:
+                    # Filter for events related to this token
+                    filtered_events = []
+                    for event in events:
+                        maker_id = str(event.get('makerAssetID', ''))
+                        taker_id = str(event.get('takerAssetID', ''))
+                        if maker_id == token_id or taker_id == token_id:
+                            # Add a source field to identify the event type
+                            event['source'] = 'OrdersMatchedEvent'
+                            filtered_events.append(event)
+                    
                     # Only add events we haven't seen before
                     new_events_count = 0
-                    for event in events:
+                    for event in filtered_events:
                         if event['id'] not in seen_event_ids:
                             all_events.append(event)
                             seen_event_ids.add(event['id'])
@@ -480,69 +460,37 @@ def collect_orders_matched_events(token_id, api_key, output_dir, batch_size=5000
                     has_more = False
             
             except Exception as e:
-                logger.error(f"Error collecting makerAssetID events for token {token_id}: {e}")
+                logger.warning(f"Error collecting OrdersMatchedEvent makerAssetID events for token {token_id}: {e}")
                 has_more = False  # Exit the loop
         
-        # Now collect events where this token is the takerAssetID
+        # 2. Try OrdersMatchedEvent - looking for events where this token is the takerAssetID
         skip = 0
         has_more = True
         
         while has_more:
+            query = {
+                'query': f"""
+                {{
+                  ordersMatchedEvents(
+                    first: {batch_size}
+                    skip: {skip}
+                    orderBy: timestamp
+                    orderDirection: asc
+                  ) {{
+                    id
+                    timestamp
+                    makerAmountFilled
+                    takerAmountFilled
+                    makerAssetID
+                    takerAssetID
+                  }}
+                }}
+                """
+            }
+            
             try:
-                # Try with takerAssetID first (uppercase ID)
-                query = {
-                    'query': f"""
-                    {{
-                      ordersMatchedEvents(
-                        first: {batch_size}
-                        skip: {skip}
-                        orderBy: timestamp
-                        orderDirection: asc
-                        where: {{ 
-                          takerAssetID: "{token_id}" 
-                        }}
-                      ) {{
-                        id
-                        timestamp
-                        makerAmountFilled
-                        takerAmountFilled
-                        makerAssetID
-                        takerAssetID
-                      }}
-                    }}
-                    """
-                }
-                
-                try:
-                    data = make_api_request(url, headers, query, timeout=timeout)
-                    events = data.get('data', {}).get('ordersMatchedEvents', [])
-                except Exception as e:
-                    # Try with camelCase field names (takerAssetId instead of takerAssetID)
-                    logger.warning(f"First query failed: {e}. Trying with camelCase field names.")
-                    query = {
-                        'query': f"""
-                        {{
-                          ordersMatchedEvents(
-                            first: {batch_size}
-                            skip: {skip}
-                            orderBy: timestamp
-                            orderDirection: asc
-                            where: {{ 
-                              takerAssetId: "{token_id}" 
-                            }}
-                          ) {{
-                            id
-                            timestamp
-                            makerAmountFilled
-                            takerAmountFilled
-                            makerAssetId
-                            takerAssetId
-                          }}
-                        }}
-                        """
-                    }
-                    data = make_api_request(url, headers, query, timeout=timeout)
-                    events = data.get('data', {}).get('ordersMatchedEvents', [])
+                data = make_api_request(url, headers, query, timeout=timeout)
+                events = data.get('data', {}).get('ordersMatchedEvents', [])
                 
                 # Process the events
                 if events:
@@ -550,6 +498,8 @@ def collect_orders_matched_events(token_id, api_key, output_dir, batch_size=5000
                     new_events_count = 0
                     for event in events:
                         if event['id'] not in seen_event_ids:
+                            # Add a source field to identify the event type
+                            event['source'] = 'OrdersMatchedEvent'
                             all_events.append(event)
                             seen_event_ids.add(event['id'])
                             new_events_count += 1
@@ -566,7 +516,135 @@ def collect_orders_matched_events(token_id, api_key, output_dir, batch_size=5000
                     has_more = False
             
             except Exception as e:
-                logger.error(f"Error collecting takerAssetID events for token {token_id}: {e}")
+                logger.warning(f"Error collecting OrdersMatchedEvent takerAssetID events for token {token_id}: {e}")
+                has_more = False  # Exit the loop
+        
+        # 3. Also try OrderFilledEvent as a backup - looking for events where this token is the makerAssetId
+        skip = 0
+        has_more = True
+        
+        while has_more:
+            query = {
+                'query': f"""
+                {{
+                  orderFilledEvents(
+                    first: {batch_size}
+                    skip: {skip}
+                    orderBy: timestamp
+                    orderDirection: asc
+                    where: {{ 
+                      makerAssetId: "{token_id}" 
+                    }}
+                  ) {{
+                    id
+                    timestamp
+                    maker
+                    taker
+                    makerAmountFilled
+                    takerAmountFilled
+                    makerAssetId
+                    takerAssetId
+                    fee
+                    transactionHash
+                    orderHash
+                  }}
+                }}
+                """
+            }
+            
+            try:
+                data = make_api_request(url, headers, query, timeout=timeout)
+                events = data.get('data', {}).get('orderFilledEvents', [])
+                
+                # Process the events
+                if events:
+                    # Only add events we haven't seen before
+                    new_events_count = 0
+                    for event in events:
+                        if event['id'] not in seen_event_ids:
+                            # Add a source field to identify the event type
+                            event['source'] = 'OrderFilledEvent'
+                            all_events.append(event)
+                            seen_event_ids.add(event['id'])
+                            new_events_count += 1
+                    
+                    # Move to next batch
+                    skip += len(events)
+                    progress.update(1)
+                    
+                    # Check if we've reached the end
+                    if len(events) < batch_size or new_events_count == 0:
+                        has_more = False
+                else:
+                    # No more events
+                    has_more = False
+            
+            except Exception as e:
+                logger.warning(f"Error collecting OrderFilledEvent makerAssetId events for token {token_id}: {e}")
+                has_more = False  # Exit the loop
+        
+        # 4. Finally try OrderFilledEvent - looking for events where this token is the takerAssetId
+        skip = 0
+        has_more = True
+        
+        while has_more:
+            query = {
+                'query': f"""
+                {{
+                  orderFilledEvents(
+                    first: {batch_size}
+                    skip: {skip}
+                    orderBy: timestamp
+                    orderDirection: asc
+                    where: {{ 
+                      takerAssetId: "{token_id}" 
+                    }}
+                  ) {{
+                    id
+                    timestamp
+                    maker
+                    taker
+                    makerAmountFilled
+                    takerAmountFilled
+                    makerAssetId
+                    takerAssetId
+                    fee
+                    transactionHash
+                    orderHash
+                  }}
+                }}
+                """
+            }
+            
+            try:
+                data = make_api_request(url, headers, query, timeout=timeout)
+                events = data.get('data', {}).get('orderFilledEvents', [])
+                
+                # Process the events
+                if events:
+                    # Only add events we haven't seen before
+                    new_events_count = 0
+                    for event in events:
+                        if event['id'] not in seen_event_ids:
+                            # Add a source field to identify the event type
+                            event['source'] = 'OrderFilledEvent'
+                            all_events.append(event)
+                            seen_event_ids.add(event['id'])
+                            new_events_count += 1
+                    
+                    # Move to next batch
+                    skip += len(events)
+                    progress.update(1)
+                    
+                    # Check if we've reached the end
+                    if len(events) < batch_size or new_events_count == 0:
+                        has_more = False
+                else:
+                    # No more events
+                    has_more = False
+            
+            except Exception as e:
+                logger.warning(f"Error collecting OrderFilledEvent takerAssetId events for token {token_id}: {e}")
                 has_more = False  # Exit the loop
         
         # Close progress bar
@@ -574,57 +652,96 @@ def collect_orders_matched_events(token_id, api_key, output_dir, batch_size=5000
         
         # Process results
         if all_events:
-            logger.info(f"Collected {len(all_events)} matched events for token {token_id}")
+            logger.info(f"Collected {len(all_events)} total events for token {token_id}")
             
             try:
-                # Normalize event data to handle potential schema differences
-                normalized_events = []
-                for event in all_events:
-                    normalized_event = {
-                        'id': event.get('id'),
-                        'timestamp': event.get('timestamp'),
-                        'makerAmountFilled': event.get('makerAmountFilled'),
-                        'takerAmountFilled': event.get('takerAmountFilled'),
-                        # Handle both field name styles
-                        'makerAssetID': event.get('makerAssetID', event.get('makerAssetId')),
-                        'takerAssetID': event.get('takerAssetID', event.get('takerAssetId')),
-                    }
-                    normalized_events.append(normalized_event)
+                # Group events by source for processing
+                ordered_matched_events = [e for e in all_events if e['source'] == 'OrdersMatchedEvent']
+                order_filled_events = [e for e in all_events if e['source'] == 'OrderFilledEvent']
                 
-                events_df = pd.DataFrame(normalized_events)
+                # Log the breakdown
+                logger.info(f"  - OrdersMatchedEvent: {len(ordered_matched_events)}")
+                logger.info(f"  - OrderFilledEvent: {len(order_filled_events)}")
+                
+                # Create two separate dataframes and then combine them
+                dfs = []
+                
+                # Process OrdersMatchedEvents
+                if ordered_matched_events:
+                    # OrdersMatchedEvent has different structure
+                    matched_df = pd.DataFrame(ordered_matched_events)
+                    matched_df['event_type'] = 'OrdersMatchedEvent'
+                    
+                    # Convert numeric columns
+                    numeric_cols = ['makerAmountFilled', 'takerAmountFilled', 'makerAssetID', 'takerAssetID', 'timestamp']
+                    for col in numeric_cols:
+                        if col in matched_df.columns:
+                            matched_df[col] = pd.to_numeric(matched_df[col], errors='coerce')
+                    
+                    # Rename columns for consistency with OrderFilledEvent
+                    matched_df = matched_df.rename(columns={
+                        'makerAssetID': 'makerAssetId',
+                        'takerAssetID': 'takerAssetId'
+                    })
+                    
+                    dfs.append(matched_df)
+                
+                # Process OrderFilledEvents
+                if order_filled_events:
+                    # OrderFilledEvent has different structure
+                    filled_df = pd.DataFrame(order_filled_events)
+                    filled_df['event_type'] = 'OrderFilledEvent'
+                    
+                    # Convert numeric columns
+                    numeric_cols = ['makerAmountFilled', 'takerAmountFilled', 'fee', 'timestamp']
+                    for col in numeric_cols:
+                        if col in filled_df.columns:
+                            filled_df[col] = pd.to_numeric(filled_df[col], errors='coerce')
+                    
+                    dfs.append(filled_df)
+                
+                # Combine the dataframes if we have more than one
+                if len(dfs) > 1:
+                    # Get common columns for the join
+                    common_cols = set(dfs[0].columns)
+                    for df in dfs[1:]:
+                        common_cols = common_cols.intersection(set(df.columns))
+                    
+                    # Use concat with only common columns
+                    events_df = pd.concat([df[list(common_cols)] for df in dfs], ignore_index=True)
+                else:
+                    events_df = dfs[0]
                 
                 # Add token ID for reference
                 events_df['token_id'] = token_id
                 
-                # Convert numeric columns
-                for col in ['makerAmountFilled', 'takerAmountFilled', 'makerAssetID', 'takerAssetID', 'timestamp']:
-                    if col in events_df.columns:
-                        events_df[col] = pd.to_numeric(events_df[col], errors='coerce')
-                
                 # Save to parquet file
                 events_df.to_parquet(output_file, compression='snappy')
                 
-                logger.info(f"Saved matched events to {output_file}")
+                logger.info(f"Saved events to {output_file}")
                 
                 return {
                     'token_id': token_id,
                     'event_count': len(all_events),
+                    'matched_events_count': len(ordered_matched_events),
+                    'filled_events_count': len(order_filled_events),
                     'file_path': output_file,
                     'success': True
                 }
             except Exception as e:
                 logger.error(f"Error processing events data for token {token_id}: {e}")
+                import traceback
+                logger.error(traceback.format_exc())
                 return {
                     'token_id': token_id,
                     'success': False,
                     'error': str(e)
                 }
         else:
-            logger.info(f"No matched events found for token {token_id}")
+            logger.info(f"No events found for token {token_id}")
             
             # Create an empty DataFrame and save it to maintain consistency
-            empty_df = pd.DataFrame(columns=['id', 'timestamp', 'makerAmountFilled', 
-                                            'takerAmountFilled', 'makerAssetID', 'takerAssetID', 'token_id'])
+            empty_df = pd.DataFrame(columns=['id', 'timestamp', 'event_type', 'token_id'])
             empty_df['token_id'] = token_id
             empty_df.to_parquet(output_file, compression='snappy')
             
@@ -635,7 +752,9 @@ def collect_orders_matched_events(token_id, api_key, output_dir, batch_size=5000
             }
     
     except Exception as e:
-        logger.error(f"Error collecting matched events for token {token_id}: {e}")
+        logger.error(f"Error collecting events for token {token_id}: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
         return {
             'token_id': token_id,
             'success': False,
@@ -719,7 +838,7 @@ def main():
     parser.add_argument("--skip-orderbooks", action="store_true", help="Skip orderbook data collection")
     parser.add_argument("--skip-matched-events", action="store_true", help="Skip matched events collection")
     parser.add_argument("--timeout", type=int, default=60, help="Request timeout in seconds (default: 60)")
-    parser.add_argument("--batch-size", type=int, default=5000, help="Batch size for queries (default: 5000)")
+    parser.add_argument("--batch-size", type=int, default=1000, help="Batch size for queries (default: 1000)")
     parser.add_argument("--output-dir", default="polymarket_raw_data", help="Base output directory")
     args = parser.parse_args()
     

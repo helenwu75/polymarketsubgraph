@@ -40,6 +40,8 @@ volume_analysis/
 logs/*
 logs/
 *.csv
+*.xtml
+.xtml
 
 # IDE
 .idea/
@@ -55,3 +57,4 @@ logs/
 .Trashes
 ehthumbs.db
 Thumbs.db
+analysis_results/election_metrics_results_edit.xml
