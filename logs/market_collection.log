@@ -1,0 +1,146 @@
+2025-03-13 15:17:23,695 - INFO - Loading market data from top_election_markets.csv
+2025-03-13 15:17:23,706 - INFO - Found 500 markets in CSV, will process 500
+2025-03-13 15:17:24,321 - INFO - HTTP Request: POST https://gateway.thegraph.com/api/3cba9db7fd576b4c4822663ffd805e75/subgraphs/id/Bx1W4S7kDVxs9gC3s2G6DS8kdNBJNVhMviCtin2DiBp "HTTP/2 200 OK"
+2025-03-13 15:17:27,754 - INFO - HTTP Request: POST https://gateway.thegraph.com/api/3cba9db7fd576b4c4822663ffd805e75/subgraphs/id/81Dm16JjuFSrqz813HysXoUPvzTwE7fsfPk2RTf66nyC "HTTP/2 200 OK"
+2025-03-13 15:17:28,265 - INFO - HTTP Request: POST https://gateway.thegraph.com/api/3cba9db7fd576b4c4822663ffd805e75/subgraphs/id/6c58N5U4MtQE2Y8njfVrrAfRykzfqajMGeTMEvMmskVz "HTTP/2 200 OK"
+2025-03-13 15:17:28,281 - INFO - Processing 500 markets in parallel with 4 workers
+2025-03-13 15:17:28,283 - INFO - Processing market: Will Donald Trump win the 2024 US Presidential Election? (ID: nan)
+2025-03-13 15:17:28,284 - INFO - Processing market: Will Kamala Harris win the 2024 US Presidential Election? (ID: nan)
+2025-03-13 15:17:28,284 - INFO - Processing market: Will any other Republican Politician win the 2024 US Presidential Election? (ID: nan)
+2025-03-13 15:17:28,284 - INFO - Found 2 tokens for market
+2025-03-13 15:17:28,284 - INFO - Processing market: Kamala Harris wins the popular vote? (ID: nan)
+2025-03-13 15:17:28,284 - INFO - Found 2 tokens for market
+2025-03-13 15:17:28,297 - INFO - Found 2 tokens for market
+2025-03-13 15:17:28,298 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:17:28,298 - INFO - Found 2 tokens for market
+2025-03-13 15:17:28,298 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:17:28,298 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:17:28,298 - INFO - Processing token 21742633143463906290569050155826241533067272736897614950488156847949938836455
+2025-03-13 15:17:28,298 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:17:28,298 - INFO - Processing token 69236923620077691027083946871148646972011131466059644796654161903044970987404
+2025-03-13 15:17:28,299 - INFO - Processing token 87935798830831555521299232238121934560977823768906296045917813721531790174443
+2025-03-13 15:17:28,299 - INFO - Processing token 21271000291843361249209065706097167029083067325856089903026951915683588703117
+2025-03-13 15:17:28,344 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:28,346 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409320)
+2025-03-13 15:17:28,348 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409080)
+2025-03-13 15:17:28,350 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843780)
+2025-03-13 15:17:33,360 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409080)
+2025-03-13 15:17:33,364 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409320)
+2025-03-13 15:17:33,367 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843780)
+2025-03-13 15:17:33,368 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:38,381 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:38,385 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843780)
+2025-03-13 15:17:38,387 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409320)
+2025-03-13 15:17:38,389 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409080)
+2025-03-13 15:17:38,389 - ERROR - Error fetching trades for 87935798830831555521299232238121934560977823768906296045917813721531790174443: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:38,389 - ERROR - Error fetching trades for 21271000291843361249209065706097167029083067325856089903026951915683588703117: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843780)
+2025-03-13 15:17:38,390 - ERROR - Error fetching trades for 69236923620077691027083946871148646972011131466059644796654161903044970987404: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409320)
+2025-03-13 15:17:38,390 - ERROR - Error fetching trades for 21742633143463906290569050155826241533067272736897614950488156847949938836455: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409080)
+2025-03-13 15:17:38,398 - ERROR - Error fetching trader metrics for 87935798830831555521299232238121934560977823768906296045917813721531790174443: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:38,399 - ERROR - Error fetching trader metrics for 21271000291843361249209065706097167029083067325856089903026951915683588703117: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:38,401 - ERROR - Error fetching trader metrics for 69236923620077691027083946871148646972011131466059644796654161903044970987404: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:38,403 - ERROR - Error fetching trader metrics for 21742633143463906290569050155826241533067272736897614950488156847949938836455: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:38,404 - INFO - Processing token 57677804490585887398706024193987529955099603362215749525873675088072565146041
+2025-03-13 15:17:38,404 - INFO - Processing token 87584955359245246404952128082451897287778571240979823316620093987046202296181
+2025-03-13 15:17:38,404 - INFO - Processing token 43898019188443109254544011644141095748327433947336326565220861409147408981284
+2025-03-13 15:17:38,407 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:38,407 - INFO - Processing token 48331043336612883890938759509493159234755048973500640148014422747788308965732
+2025-03-13 15:17:38,410 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409320)
+2025-03-13 15:17:38,411 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843780)
+2025-03-13 15:17:38,414 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409080)
+2025-03-13 15:17:43,415 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:43,420 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409320)
+2025-03-13 15:17:43,423 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843780)
+2025-03-13 15:17:43,426 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409080)
+2025-03-13 15:17:48,428 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:48,433 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843780)
+2025-03-13 15:17:48,436 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409080)
+2025-03-13 15:17:48,439 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409320)
+2025-03-13 15:17:48,440 - ERROR - Error fetching trades for 57677804490585887398706024193987529955099603362215749525873675088072565146041: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:48,440 - ERROR - Error fetching trades for 43898019188443109254544011644141095748327433947336326565220861409147408981284: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843780)
+2025-03-13 15:17:48,440 - ERROR - Error fetching trades for 48331043336612883890938759509493159234755048973500640148014422747788308965732: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409080)
+2025-03-13 15:17:48,440 - ERROR - Error fetching trades for 87584955359245246404952128082451897287778571240979823316620093987046202296181: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409320)
+2025-03-13 15:17:48,446 - ERROR - Error fetching trader metrics for 57677804490585887398706024193987529955099603362215749525873675088072565146041: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:48,448 - ERROR - Error fetching trader metrics for 43898019188443109254544011644141095748327433947336326565220861409147408981284: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:48,449 - ERROR - Error fetching trader metrics for 48331043336612883890938759509493159234755048973500640148014422747788308965732: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:48,451 - ERROR - Error fetching trader metrics for 87584955359245246404952128082451897287778571240979823316620093987046202296181: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:48,453 - INFO - Processing market: Will Michelle Obama win the 2024 US Presidential Election? (ID: nan)
+2025-03-13 15:17:48,453 - INFO - Processing market: Will Robert F. Kennedy Jr. win the 2024 US Presidential Election? (ID: nan)
+2025-03-13 15:17:48,453 - INFO - Processing market: Will Donald Trump win the popular vote in the 2024 Presidential Election? (ID: nan)
+2025-03-13 15:17:48,454 - INFO - Processing market: Will any other Democratic Politician win the 2024 US Presidential Election? (ID: nan)
+2025-03-13 15:17:48,454 - INFO - Found 2 tokens for market
+2025-03-13 15:17:48,454 - INFO - Found 2 tokens for market
+2025-03-13 15:17:48,454 - INFO - Found 2 tokens for market
+2025-03-13 15:17:48,454 - INFO - Found 2 tokens for market
+2025-03-13 15:17:48,454 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:17:48,455 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:17:48,455 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:17:48,455 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:17:48,455 - INFO - Processing token 97508453625137094121006941885029334584603955750917059456402541591996493525667
+2025-03-13 15:17:48,455 - INFO - Processing token 75551890681049796405776295654438099776333571510662809052054780589218524237663
+2025-03-13 15:17:48,455 - INFO - Processing token 42699080635179861375280720242213672850141860123562672932351602811041149946128
+2025-03-13 15:17:48,456 - INFO - Processing token 74706296939809671893768905246606398708802232875822379413753245164957842209130
+2025-03-13 15:17:48,459 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704492060)
+2025-03-13 15:17:48,462 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409260)
+2025-03-13 15:17:48,463 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843420)
+2025-03-13 15:17:48,465 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:53,468 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704492060)
+2025-03-13 15:17:53,471 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409260)
+2025-03-13 15:17:53,473 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843420)
+2025-03-13 15:17:53,475 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:58,477 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704492060)
+2025-03-13 15:17:58,478 - ERROR - Error fetching trades for 97508453625137094121006941885029334584603955750917059456402541591996493525667: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704492060)
+2025-03-13 15:17:58,482 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:58,484 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843420)
+2025-03-13 15:17:58,487 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409260)
+2025-03-13 15:17:58,489 - ERROR - Error fetching trader metrics for 97508453625137094121006941885029334584603955750917059456402541591996493525667: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:58,489 - ERROR - Error fetching trades for 74706296939809671893768905246606398708802232875822379413753245164957842209130: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:17:58,489 - ERROR - Error fetching trades for 42699080635179861375280720242213672850141860123562672932351602811041149946128: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843420)
+2025-03-13 15:17:58,489 - ERROR - Error fetching trades for 75551890681049796405776295654438099776333571510662809052054780589218524237663: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409260)
+2025-03-13 15:17:58,491 - ERROR - Error fetching trader metrics for 74706296939809671893768905246606398708802232875822379413753245164957842209130: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:58,493 - ERROR - Error fetching trader metrics for 42699080635179861375280720242213672850141860123562672932351602811041149946128: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:58,494 - INFO - Processing token 101835693390914207034008670272805414453671321042882880939287726647351186404691
+2025-03-13 15:17:58,495 - ERROR - Error fetching trader metrics for 75551890681049796405776295654438099776333571510662809052054780589218524237663: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:17:58,497 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704492060)
+2025-03-13 15:17:58,497 - INFO - Processing token 52646153159016006621189163812433115969858888637703551736022048114666679879653
+2025-03-13 15:17:58,497 - INFO - Processing token 103543247440804352548620987887141435213865749546518237928636621721195722919525
+2025-03-13 15:17:58,498 - INFO - Processing token 56404905393055211239795086916790918063008904529043139446524120756836481670648
+2025-03-13 15:17:58,499 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843420)
+2025-03-13 15:17:58,501 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409260)
+2025-03-13 15:17:58,503 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:18:03,509 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704492060)
+2025-03-13 15:18:03,514 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843420)
+2025-03-13 15:18:03,517 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:18:03,520 - WARNING - Retry 2/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409260)
+2025-03-13 15:18:08,524 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843420)
+2025-03-13 15:18:08,527 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704492060)
+2025-03-13 15:18:08,530 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:18:08,533 - ERROR - Failed to fetch trades after 3 retries: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409260)
+2025-03-13 15:18:08,533 - ERROR - Error fetching trades for 52646153159016006621189163812433115969858888637703551736022048114666679879653: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843420)
+2025-03-13 15:18:08,533 - ERROR - Error fetching trades for 101835693390914207034008670272805414453671321042882880939287726647351186404691: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704492060)
+2025-03-13 15:18:08,534 - ERROR - Error fetching trades for 103543247440804352548620987887141435213865749546518237928636621721195722919525: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704571980)
+2025-03-13 15:18:08,534 - ERROR - Error fetching trades for 56404905393055211239795086916790918063008904529043139446524120756836481670648: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409260)
+2025-03-13 15:18:08,537 - ERROR - Error fetching trader metrics for 52646153159016006621189163812433115969858888637703551736022048114666679879653: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:18:08,540 - ERROR - Error fetching trader metrics for 101835693390914207034008670272805414453671321042882880939287726647351186404691: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:18:08,543 - ERROR - Error fetching trader metrics for 103543247440804352548620987887141435213865749546518237928636621721195722919525: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:18:08,545 - ERROR - Error fetching trader metrics for 56404905393055211239795086916790918063008904529043139446524120756836481670648: 'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'
+2025-03-13 15:18:08,546 - INFO - Processing market: Will Nikki Haley win the 2024 US Presidential Election? (ID: nan)
+2025-03-13 15:18:08,546 - INFO - Found 2 tokens for market
+2025-03-13 15:18:08,547 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:18:08,547 - INFO - Processing token 19083349462791593334532840548890602187185739923311385087650426802477691161360
+2025-03-13 15:18:08,547 - INFO - Processing market: Will Hillary Clinton win the 2024 US Presidential Election? (ID: nan)
+2025-03-13 15:18:08,549 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409080)
+2025-03-13 15:18:08,550 - INFO - Processing market: Will Joe Biden win the 2024 US Presidential Election? (ID: nan)
+2025-03-13 15:18:08,550 - INFO - Found 2 tokens for market
+2025-03-13 15:18:08,550 - INFO - Processing market: Will Hillary Clinton win the popular vote in the 2024 Presidential Election? (ID: nan)
+2025-03-13 15:18:08,550 - INFO - Found 2 tokens for market
+2025-03-13 15:18:08,550 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:18:08,551 - INFO - Found 2 tokens for market
+2025-03-13 15:18:08,551 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:18:08,551 - INFO - Processing token 79316691944049488812500733050438507204613781002222375264046442941003895009475
+2025-03-13 15:18:08,551 - ERROR - Error fetching market basics for nan: 'float' object has no attribute 'lower'
+2025-03-13 15:18:08,551 - INFO - Processing token 88027839609243624193415614179328679602612916497045596227438675518749602824929
+2025-03-13 15:18:08,551 - INFO - Processing token 21331146930618962824689789220409196138572970640663273021860765909977344077098
+2025-03-13 15:18:08,553 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704492060)
+2025-03-13 15:18:08,556 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704409080)
+2025-03-13 15:18:08,559 - WARNING - Retry 1/3 for trades query: mk_input_value(name_='BigInt' kind='SCALAR', name='BigInt' description=None kind='SCALAR', 1704843960)
