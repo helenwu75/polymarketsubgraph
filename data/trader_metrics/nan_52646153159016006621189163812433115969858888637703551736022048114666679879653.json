@@ -1,4 +1,0 @@
-{
-  "token_id": "52646153159016006621189163812433115969858888637703551736022048114666679879653",
-  "error": "'TypeMeta.InputObjectMeta.type_of_input_field: no input field named lastTradedTimestamp_lt for input object MarketPosition_filter'"
-}
