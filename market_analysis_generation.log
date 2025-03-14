@@ -1,0 +1,5 @@
+2025-03-13 21:36:49,283 - INFO - Using trades directory: polymarket_raw_data/trades
+2025-03-13 21:36:49,283 - INFO - Loading market data from top_election_markets.csv
+2025-03-13 21:36:49,298 - INFO - Loaded 500 markets from CSV
+2025-03-13 21:36:49,299 - INFO - Processing 500 markets
+2025-03-13 21:36:49,299 - INFO - Using 8 parallel workers

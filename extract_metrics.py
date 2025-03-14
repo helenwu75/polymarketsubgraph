@@ -33,7 +33,7 @@ BATCH_SIZE = 1000
 REQUEST_TIMEOUT = 120  # Seconds
 MAX_RETRIES = 3
 RETRY_DELAY = 5  # Seconds
-MAX_TRADERS_PER_TOKEN = 100000  # Limit to prevent excessive runtime
+MAX_TRADERS_PER_TOKEN = 1000  # Limit to prevent excessive runtime
 
 # ConfigSettings class to allow runtime modification of constants
 class ConfigSettings:
