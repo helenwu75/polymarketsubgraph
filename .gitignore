@@ -39,6 +39,7 @@ volume_test/
 volume_analysis/
 logs/*
 logs/
+*.csv
 
 # IDE
 .idea/
