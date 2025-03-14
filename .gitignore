@@ -33,7 +33,8 @@ data/processed/*
 polymarket_raw_data/
 !data/raw/.gitkeep
 !data/processed/.gitkeep
-reports
+reports/
+missing_tokens/
 
 # IDE
 .idea/
