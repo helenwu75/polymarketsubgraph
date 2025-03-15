@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 """
 Streamlined Summary Statistics for Polymarket Election Markets Analysis
+
+This script provides a streamlined approach to generating summary statistics
+for Polymarket election markets analysis, including target variable distribution, prediction quality metrics, feature importance, and market outcome analysis.
+
+The script is designed to be run in a Jupyter notebook or as a standalone Python script.
+
+Author: Helen Wu
+Last updated: 2025-03-15
 """
 import pandas as pd
 import numpy as np

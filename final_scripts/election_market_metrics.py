@@ -5,6 +5,19 @@ Election Market Metrics Calculator
 This script calculates comprehensive metrics for Polymarket election markets
 by processing trade data, orderbook data, and market information to create
 features for machine learning analysis.
+
+The script loads market data from a CSV file, processes each market in parallel,
+and outputs a CSV file with all calculated metrics.
+
+Usage:
+    python election_market_metrics.py --input markets.csv --output metrics.csv
+
+Options:
+    --input <file>      Input CSV file with market data
+    --output <file>     Output CSV filename (default: election_market_metrics.csv)
+    
+Author: Helen Wu
+Last updated: 2025-03-15
 """
 
 import os

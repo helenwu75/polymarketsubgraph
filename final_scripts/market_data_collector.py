@@ -9,6 +9,32 @@ This script efficiently extracts comprehensive market data from Polymarket subgr
 
 Usage:
     python market_data_collector.py --input top_election_markets.csv [options]
+
+Options:
+    --api-key
+        Your Graph API key for accessing the subgraphs.
+    --output-dir
+        Directory to save the collected data.
+    --token-col
+        Column name containing token IDs in the input CSV.
+    --batch-size
+        Number of records to fetch per request.
+    --timeout
+        Timeout in seconds for each API request.
+    --trades
+        Collect trade data.
+    --orderbook
+        Collect orderbook entity data.
+    --matched-events
+        Collect OrdersMatchedEvent data.
+
+Example:
+    python market_data_collector.py --input top_election_markets.csv --api-key YOUR_API_KEY --output-dir polymarket_raw_data --trades --orderbook --matched-events
+
+Note: The script uses the official Polymarket subgraph IDs and schema.
+
+Author: Helen Wu
+Last updated: 2025-03-15
 """
 
 import os

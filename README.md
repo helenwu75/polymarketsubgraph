@@ -1,14 +1,22 @@
-Machine learning project analyzing Polymarket prediction market data using The Graph API.
+# Subgraph Project
 
-Directory Structure:
+## Overview
 
-- polymarket_raw_data/ - Main directory for raw collected data
-- polymarket_raw_data/trades/ - Trade data for each token as Parquet files
-- polymarket_raw_data/collection_summary.json - Collection statistics and results
-- polymarket_raw_data/market_tokens.json - Mapping of markets to their token IDs
+This project focuses on the implementation and analysis of subgraphs within a machine learning context. The goal is to explore the properties and applications of subgraphs in various ML tasks.
 
-Useful Scripts:
+## Project Structure
 
-- market_data_collector.py - Extracts raw trade data for Polymarket tokens from a csv (using clobTokenIds attribute)
-- price_data.py - Calculates key pricing metrics for given tokens using stream processing (closing price, VWAP, price volatility)
-- extract_metrics.py - Extracts comprehensive metrics for given market (average daily volume, length, # traders, trader-to-volume ratio, trading frequency, buy/sell)
+The project is organized into the following directories and files:
+
+- `/data`: Contains datasets used for training and evaluation.
+- `/src`: Source code for the project.
+  - `main.py`: Main script to run the project.
+  - `utils.py`: Utility functions used across the project.
+- `/models`: Contains machine learning models.
+  - `model.py`: Definition of the ML models.
+- `/notebooks`: Jupyter notebooks for experimentation and analysis.
+- `/docs`: Documentation files.
+  - `installation.md`: Instructions for setting up the project.
+  - `usage.md`: Guide on how to use the project.
+  - `contributing.md`: Guidelines for contributing to the project.
+- `README.md`: This file.
