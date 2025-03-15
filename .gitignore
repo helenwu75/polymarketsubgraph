@@ -43,9 +43,10 @@ logs/
 *.xtml
 .xtml
 examples/*
-summary_stats_results/*
-test_scripts/*
-data/*
+summary_stats_results/
+test_scripts/
+data/
+summary_stats_results/
 
 # IDE
 .idea/
