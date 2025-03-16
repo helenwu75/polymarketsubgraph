@@ -7,6 +7,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
+build/
 develop-eggs/
 dist/
 downloads/
@@ -26,27 +27,25 @@ wheels/
 .venv/
 venv/
 ENV/
+env/
 
-# Data
+# Data directories
+polymarket_raw_data/
 data/raw/*
 data/processed/*
-polymarket_raw_data/
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+
+# Output directories
 reports/
+logs/
+summary_stats_results/
+analysis_results/
+modified_analysis/
+test_scripts/
 missing_tokens/
 volume_test/
 volume_analysis/
-logs/*
-logs/
-*.csv
-*.xtml
-.xtml
-examples/*
-summary_stats_results/
-test_scripts/
-data/
-summary_stats_results/
 
 # IDE
 .idea/
@@ -54,7 +53,7 @@ summary_stats_results/
 *.swp
 *.swo
 
-# OS
+# OS generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -62,5 +61,9 @@ summary_stats_results/
 .Trashes
 ehthumbs.db
 Thumbs.db
-analysis_results/election_metrics_results_edit.xml
-data_files/analysis_results/election_metrics_results_edit.xml
+
+# Data files
+*.csv
+*.parquet
+*.xml
+*.json
