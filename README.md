@@ -317,36 +317,6 @@ python summary_stats.py --input election_metrics_results.csv
 
 This will generate various visualizations and report files in the `summary_stats_results` directory.
 
-## Factor Importance Analysis
-
-The analysis examines correlations between market metrics and prediction accuracy. Key correlations with prediction correctness include:
-
-| Metric                   | Correlation | Interpretation                                           |
-| ------------------------ | ----------- | -------------------------------------------------------- |
-| Prediction Error         | -0.8319     | Strong negative correlation (expected)                   |
-| Late Stage Participation | -0.2323     | Moderate negative - late trading may reduce accuracy     |
-| Closing Price            | -0.1717     | Modest negative - uncertain predictions less accurate    |
-| Price Volatility         | 0.1326      | Modest positive - active price discovery may help        |
-| Two-way Traders Ratio    | 0.1140      | Slight positive - traders on both sides improve accuracy |
-
-## Project Structure
-
-```
-.
-├── data_cleaning.py               # Data preprocessing for ML
-├── election_market_metrics.py     # Metrics calculation
-├── market_data_collector.py       # Raw data collection
-├── requirements.txt               # Project dependencies
-├── src/                           # Source code modules
-│   ├── __init__.py
-│   ├── config/                    # Configuration utilities
-│   ├── data/                      # Data collection modules
-│   ├── models/                    # Analysis models
-│   └── utils/                     # Utility functions
-├── append_brier_scores.py         # Add prediction scoring
-└── summary_stats.py               # Generate reports and visualizations
-```
-
 ## Acknowledgments
 
 This research uses data from Polymarket and The Graph API.
